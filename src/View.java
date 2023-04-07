@@ -92,8 +92,10 @@ public class View extends JFrame {
 
 	private boolean checkWinner(int c, int r) {
 		// check column
-		int indexColumn = c + 1;
+		int indexColumn = c;
 		int indexRow = r;
+		XTicked = 0;
+		YTicked = 0;
 		// check current index to the right
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn > this.column - 1) break;
@@ -103,11 +105,12 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				++indexColumn;
 			}
 		}
 
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("Column 1 - X: " + XTicked + " || Y: " + YTicked);
 		if(XTicked >= 5 || YTicked >= 5) {
 			return true;
 		}
@@ -122,22 +125,22 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				--indexColumn;
 			}
 		}
 
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("Column 2 - X: " + XTicked + " || Y: " + YTicked);
 		if(XTicked >= 5 || YTicked >= 5) {
 
 			return true;
 		}
 ////
 		indexColumn = c;
-		indexRow = r + 1;
+		indexRow = r;
 //		// check row
-//		// reset "count" variable and start check row
-		XTicked = 1;
-		YTicked = 1;
+		XTicked = 0;
+		YTicked = 0;
 //		// check current index to bottom
 		for(int i = 0; i < 5; i++) {
 			if(indexRow >= this.row - 1) break;
@@ -147,11 +150,12 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				++indexRow;
 			}
 		}
 
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("Row 1 - X: " + XTicked + " || Y: " + YTicked);
 		if(XTicked >= 5 || YTicked >= 5) return true;
 
 		indexRow = r - 1;
@@ -164,21 +168,22 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				--indexRow;
 			}
 		}
 
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("Row 2 - X: " + XTicked + " || Y: " + YTicked);
 		if(XTicked >= 5 || YTicked >= 5) return true;
 
-		XTicked = 1;
-		YTicked = 1;
+		XTicked = 0;
+		YTicked = 0;
 
 		// check left diagonal line
 		// reset "count" variable and start check,
 		// check to bottom
-		indexRow = r + 1;
-		indexColumn = c + 1;
+		indexRow = r;
+		indexColumn = c;
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn >= this.column - 1 || indexRow >= this.row - 1) break;
 			else {
@@ -187,13 +192,14 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				++indexColumn;
 				++indexRow;
 			}
 		}
 //
 		if(XTicked >= 5 || YTicked >= 5) return true;
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("LeftDiagonal 1 - X: " + XTicked + " || Y: " + YTicked);
 		indexColumn = c - 1;
 		indexRow = r - 1;
 		// check to top
@@ -205,21 +211,22 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				--indexColumn;
 				--indexRow;
 			}
 		}
 //
 		if(XTicked >= 5 || YTicked >= 5) return true;
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("LeftDiagonal 2 - X: " + XTicked + " || Y: " + YTicked);
 
 //		// check right diagonal line
 //		// reset "count"
 		// check to bottom
-		XTicked = 1;
-		YTicked = 1;
-		indexRow = r + 1;
-		indexColumn = c - 1;
+		XTicked = 0;
+		YTicked = 0;
+		indexRow = r;
+		indexColumn = c;
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn <= 0 || indexRow >= this.row - 1) break;
 			else {
@@ -228,6 +235,7 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				--indexColumn;
 				++indexRow;
 			}
@@ -235,9 +243,9 @@ public class View extends JFrame {
 
 		// check to top
 		if(XTicked >= 5 || YTicked >= 5) return true;
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
-		indexRow = r - 1;
-		indexColumn = c + 1;
+		System.out.println("RightDiagonal 1 - X: " + XTicked + " || Y: " + YTicked);
+		indexRow = r;
+		indexColumn = c;
 
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn >= this.column - 1 || indexRow <= 0) break;
@@ -247,11 +255,12 @@ public class View extends JFrame {
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
 				}
+				else break;
 				++indexColumn;
 				--indexRow;
 			}
 		}
-		System.out.println("X: " + XTicked + " || Y: " + YTicked);
+		System.out.println("RightDiagonal 2 - X: " + XTicked + " || Y: " + YTicked);
 
 		return XTicked >= 5 || YTicked >= 5;
 
