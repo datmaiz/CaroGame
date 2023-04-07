@@ -77,7 +77,6 @@ public class View extends JFrame {
 		step = new Stack<>();
 
 		createChessboard();
-		drawChessboard();
 
 		cardPanel.add(contentPanel, "game");
 		cardPanel.add(new WaitPanel(), "wait");
@@ -277,17 +276,11 @@ public class View extends JFrame {
 			for(int j = 0; j < column; j++) {
 				caroItem[i][j] = new ButtonModel(" ", i, j);
 				caroItem[i][j].addActionListener(new ActionClicked(caroItem[i][j]));
-			}
-		}
-	}
-
-	private void drawChessboard() {
-		for(int i = 0; i < row; i++) {
-			for(int j = 0; j < column; j++) {
 				contentPanel.add(caroItem[i][j]);
 			}
 		}
 	}
+
 
 	private void initEvent() {
 		undoButton.addActionListener( (e) -> {
