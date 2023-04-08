@@ -243,8 +243,8 @@ public class View extends JFrame {
 		// check to top
 		if(XTicked >= 5 || YTicked >= 5) return true;
 		System.out.println("RightDiagonal 1 - X: " + XTicked + " || Y: " + YTicked);
-		indexRow = r;
-		indexColumn = c;
+		indexRow = r - 1;
+		indexColumn = c + 1;
 
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn >= this.column - 1 || indexRow <= 0) break;
