@@ -99,6 +99,7 @@ public class View extends JFrame {
 			step.pop();
 			System.out.println("pop " + index++);
 		}
+		player = "X";
 	}
 
 	private boolean checkWinner(int c, int r) {
