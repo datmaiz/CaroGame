@@ -89,6 +89,18 @@ public class View extends JFrame {
 		initEvent();
 	}
 
+	private void newGame() {
+		System.out.println(step.size());
+		int index = 1;
+		while (!step.isEmpty()) {
+			PointStep point = step.peek();
+			caroItem[point.row][point.column].setText(" ");
+			isTicked[point.row][point.column] = false;
+			step.pop();
+			System.out.println("pop " + index++);
+		}
+	}
+
 	private boolean checkWinner(int c, int r) {
 		// check column
 		int indexColumn = c;
@@ -307,11 +319,7 @@ public class View extends JFrame {
 		newGame.addActionListener( (e) -> {
 
 			while (!step.empty()) {
-				PointStep point = step.peek();
-				int row = point.row;
-				int column = point.column;
-				isTicked[row][column] = false;
-				caroItem[row][column].setText(" ");
+				newGame();
 				step.pop();
 			}
 			XTicked = 1;
@@ -349,16 +357,21 @@ public class View extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!isTicked[jButton.row][jButton.column]) {
+				PointStep coordinated = new PointStep(jButton.row, jButton.column);
+				step.push(coordinated);
 				jButton.setText(player);
 				algorithm.drawTick(this.jButton);
-				if(checkWinner(jButton.column, jButton.row)) {
-					JOptionPane.showMessageDialog(null, "win: " + player);
+				boolean playerWin = checkWinner(jButton.column, jButton.row);
+				if(playerWin) {
+					JOptionPane.showMessageDialog(null, "Trời ơi bạn " + player
+							+ " chơi hay quá!!!");
+					JOptionPane.showMessageDialog(null, "Sao mày chơi ngu vậy hả " +
+					algorithm.checkPlayer(player) + "????");
+					newGame();
 				}
 				player = algorithm.checkPlayer(player);
 				showTurn();
 				isTicked[jButton.row][jButton.column] = true;
-				PointStep coordinated = new PointStep(jButton.row, jButton.column);
-				step.push(coordinated);
 			}
 		}
 	}
