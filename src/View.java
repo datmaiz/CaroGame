@@ -100,6 +100,7 @@ public class View extends JFrame {
 			System.out.println("pop " + index++);
 		}
 		player = "X";
+		showTurn();
 	}
 
 	private boolean checkWinner(int c, int r) {
@@ -112,10 +113,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn > this.column - 1) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				++indexColumn;
@@ -132,10 +132,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn <= 0) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				--indexColumn;
@@ -157,10 +156,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexRow >= this.row - 1) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				++indexRow;
@@ -175,10 +173,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexRow <= 0) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				--indexRow;
@@ -199,10 +196,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn >= this.column - 1 || indexRow >= this.row - 1) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				++indexColumn;
@@ -218,10 +214,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn <= 0 || indexRow <= 0) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				--indexColumn;
@@ -242,10 +237,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn <= 0 || indexRow >= this.row - 1) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				--indexColumn;
@@ -262,10 +256,9 @@ public class View extends JFrame {
 		for(int i = 0; i < 5; i++) {
 			if(indexColumn >= this.column - 1 || indexRow <= 0) break;
 			else {
-				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
-					++XTicked;
-				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
-					++YTicked;
+				if(caroItem[indexRow][indexColumn].getText().equals(player)) {
+					if(player.equals("X")) ++XTicked;
+					else if(player.equals("O")) ++YTicked;
 				}
 				else break;
 				++indexColumn;
@@ -289,6 +282,7 @@ public class View extends JFrame {
 			for(int j = 0; j < column; j++) {
 				caroItem[i][j] = new ButtonModel(" ", i, j);
 				caroItem[i][j].addActionListener(new ActionClicked(caroItem[i][j]));
+				caroItem[i][j].setFont(new Font("Ink Free", 1, 50));
 				contentPanel.add(caroItem[i][j]);
 			}
 		}
@@ -321,7 +315,7 @@ public class View extends JFrame {
 
 			while (!step.empty()) {
 				newGame();
-				step.pop();
+//				step.pop();
 			}
 			XTicked = 1;
 			YTicked = 1;
@@ -368,7 +362,7 @@ public class View extends JFrame {
 							+ " chơi hay quá!!!");
 					JOptionPane.showMessageDialog(null, "Sao mày chơi ngu vậy hả " +
 					algorithm.checkPlayer(player) + "????");
-					newGame();
+//					newGame();
 				}
 				player = algorithm.checkPlayer(player);
 				showTurn();

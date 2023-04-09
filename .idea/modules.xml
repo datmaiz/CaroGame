@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../BankThread/BankThread.iml" filepath="$PROJECT_DIR$/../BankThread/BankThread.iml" />
       <module fileurl="file://$PROJECT_DIR$/CaroGame.iml" filepath="$PROJECT_DIR$/CaroGame.iml" />
     </modules>
   </component>
