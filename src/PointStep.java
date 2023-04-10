@@ -1,4 +1,6 @@
-public class PointStep {
+import java.io.Serializable;
+
+public class PointStep implements Serializable{
 
 	int row, column;
 

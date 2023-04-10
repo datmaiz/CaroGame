@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EmptyStackException;
+import java.util.Scanner;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -26,6 +27,9 @@ public class View extends JFrame {
 	private Vector<ButtonModel> listWin;
 	private Status direction = Status.NONE_DIRECTION;
 
+	private Client client;
+	private boolean state = true;
+
 	public View(int row, int column) {
 		this.column = column;
 		this.row = row;
@@ -38,11 +42,77 @@ public class View extends JFrame {
 		initComponents();
 		revalidate();
 		repaint();
+
+		networking();
+	}
+
+	public void networking() {
+		// new Thread() {
+		// @Override
+		// public void run() {
+		// Scanner sc = new Scanner(System.in);
+		// while (true) {
+		// int row = sc.nextInt();
+		// int col = sc.nextInt();
+
+		// ButtonModel jButton = caroItem[row][col];
+		// if (!isTicked[jButton.row][jButton.column]) {
+		// PointStep coordinated = new PointStep(jButton.row, jButton.column);
+		// step.push(coordinated);
+		// jButton.setText(player);
+		// algorithm.drawTick(jButton);
+		// boolean playerWin = checkWinner(jButton.column, jButton.row);
+		// if (playerWin) {
+		// JOptionPane.showMessageDialog(null, "Trời ơi bạn " + player
+		// + " chơi hay quá!!!");
+		// JOptionPane.showMessageDialog(null, "Sao mày chơi ngu vậy hả " +
+		// algorithm.checkPlayer(player) + "????");
+		// newGame();
+		// }
+		// player = algorithm.checkPlayer(player);
+		// showTurn();
+		// isTicked[jButton.row][jButton.column] = true;
+		// }
+		// }
+		// }
+		// }.start();
+
+		client = new Client() {
+			@Override
+			public void applyNewUpdate() {
+				if (state == false) {
+					state = true;
+					return;
+				}
+
+				int row = point.row;
+				int col = point.column;
+
+				ButtonModel jButton = caroItem[row][col];
+				if (!isTicked[jButton.row][jButton.column]) {
+					PointStep coordinated = new PointStep(jButton.row, jButton.column);
+					step.push(coordinated);
+					jButton.setText(player);
+					algorithm.drawTick(jButton);
+					boolean playerWin = checkWinner(jButton.column, jButton.row);
+					if (playerWin) {
+						JOptionPane.showMessageDialog(null, "Trời ơi bạn " + player
+								+ " chơi hay quá!!!");
+						JOptionPane.showMessageDialog(null, "Sao mày chơi ngu vậy hả " +
+								algorithm.checkPlayer(player) + "????");
+						newGame();
+					}
+					player = algorithm.checkPlayer(player);
+					showTurn();
+					isTicked[jButton.row][jButton.column] = true;
+				}
+			}
+		};
 	}
 
 	private void setDefaultStatusButton() {
-		for(int i = 0; i < column; i++) {
-			for(int j = 0; j < row; j++) {
+		for (int i = 0; i < column; i++) {
+			for (int j = 0; j < row; j++) {
 				isTicked[i][j] = false;
 			}
 		}
@@ -50,7 +120,7 @@ public class View extends JFrame {
 
 	private void initDisplay() {
 		setLayout(new BorderLayout());
-	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -108,84 +178,89 @@ public class View extends JFrame {
 		XTicked = 0;
 		YTicked = 0;
 		// check current index to the right
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn > this.column - 1) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn > this.column - 1)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				++indexColumn;
 			}
 		}
 
 		System.out.println("Column 1 - X: " + XTicked + " || Y: " + YTicked);
-		if(XTicked >= 5 || YTicked >= 5) {
+		if (XTicked >= 5 || YTicked >= 5) {
 			return true;
 		}
 
 		indexColumn = c - 1;
 		// check current index to the left
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn <= 0) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn <= 0)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				--indexColumn;
 			}
 		}
 
 		System.out.println("Column 2 - X: " + XTicked + " || Y: " + YTicked);
-		if(XTicked >= 5 || YTicked >= 5) {
+		if (XTicked >= 5 || YTicked >= 5) {
 
 			return true;
 		}
-////
 		indexColumn = c;
 		indexRow = r;
-//		// check row
+		// check row
 		XTicked = 0;
 		YTicked = 0;
-//		// check current index to bottom
-		for(int i = 0; i < 5; i++) {
-			if(indexRow >= this.row - 1) break;
+		// check current index to bottom
+		for (int i = 0; i < 5; i++) {
+			if (indexRow >= this.row - 1)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				++indexRow;
 			}
 		}
 
 		System.out.println("Row 1 - X: " + XTicked + " || Y: " + YTicked);
-		if(XTicked >= 5 || YTicked >= 5) return true;
+		if (XTicked >= 5 || YTicked >= 5)
+			return true;
 
 		indexRow = r - 1;
 		// check current index to top
-		for(int i = 0; i < 5; i++) {
-			if(indexRow <= 0) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexRow <= 0)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				--indexRow;
 			}
 		}
 
 		System.out.println("Row 2 - X: " + XTicked + " || Y: " + YTicked);
-		if(XTicked >= 5 || YTicked >= 5) return true;
+		if (XTicked >= 5 || YTicked >= 5)
+			return true;
 
 		XTicked = 0;
 		YTicked = 0;
@@ -195,78 +270,85 @@ public class View extends JFrame {
 		// check to bottom
 		indexRow = r;
 		indexColumn = c;
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn >= this.column - 1 || indexRow >= this.row - 1) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn >= this.column - 1 || indexRow >= this.row - 1)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				++indexColumn;
 				++indexRow;
 			}
 		}
-//
-		if(XTicked >= 5 || YTicked >= 5) return true;
+		//
+		if (XTicked >= 5 || YTicked >= 5)
+			return true;
 		System.out.println("LeftDiagonal 1 - X: " + XTicked + " || Y: " + YTicked);
 		indexColumn = c - 1;
 		indexRow = r - 1;
 		// check to top
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn <= 0 || indexRow <= 0) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn <= 0 || indexRow <= 0)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				--indexColumn;
 				--indexRow;
 			}
 		}
-//
-		if(XTicked >= 5 || YTicked >= 5) return true;
+		//
+		if (XTicked >= 5 || YTicked >= 5)
+			return true;
 		System.out.println("LeftDiagonal 2 - X: " + XTicked + " || Y: " + YTicked);
 
-//		// check right diagonal line
-//		// reset "count"
+		// // check right diagonal line
+		// // reset "count"
 		// check to bottom
 		XTicked = 0;
 		YTicked = 0;
 		indexRow = r;
 		indexColumn = c;
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn <= 0 || indexRow >= this.row - 1) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn <= 0 || indexRow >= this.row - 1)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				--indexColumn;
 				++indexRow;
 			}
 		}
 
 		// check to top
-		if(XTicked >= 5 || YTicked >= 5) return true;
+		if (XTicked >= 5 || YTicked >= 5)
+			return true;
 		System.out.println("RightDiagonal 1 - X: " + XTicked + " || Y: " + YTicked);
 		indexRow = r - 1;
 		indexColumn = c + 1;
 
-		for(int i = 0; i < 5; i++) {
-			if(indexColumn >= this.column - 1 || indexRow <= 0) break;
+		for (int i = 0; i < 5; i++) {
+			if (indexColumn >= this.column - 1 || indexRow <= 0)
+				break;
 			else {
 				if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("X")) {
 					++XTicked;
 				} else if (caroItem[indexRow][indexColumn].getText().equalsIgnoreCase("O")) {
 					++YTicked;
-				}
-				else break;
+				} else
+					break;
 				++indexColumn;
 				--indexRow;
 			}
@@ -278,14 +360,14 @@ public class View extends JFrame {
 	}
 
 	private void removeList() {
-		while(listWin.size() != 0) {
+		while (listWin.size() != 0) {
 			listWin.remove(listWin.get(listWin.size() - 1));
 		}
 	}
 
 	private void createChessboard() {
-		for(int i = 0; i < row; i++) {
-			for(int j = 0; j < column; j++) {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < column; j++) {
 				caroItem[i][j] = new ButtonModel(" ", i, j);
 				caroItem[i][j].addActionListener(new ActionClicked(caroItem[i][j]));
 				contentPanel.add(caroItem[i][j]);
@@ -293,21 +375,19 @@ public class View extends JFrame {
 		}
 	}
 
-
 	private void initEvent() {
-		undoButton.addActionListener( (e) -> {
+		undoButton.addActionListener((e) -> {
 
 			try {
 				doUndo();
-			}
-			catch (EmptyStackException st) {
+			} catch (EmptyStackException st) {
 				JOptionPane.showMessageDialog(null, "Các nước đi trống!!");
 			}
 		});
 
-		waitButton.addActionListener( (e) -> {
+		waitButton.addActionListener((e) -> {
 
-			if(waitButton.getText().equals("Wait")) {
+			if (waitButton.getText().equals("Wait")) {
 				cardLayout.show(cardPanel, "wait");
 				waitButton.setText("Continue");
 			} else {
@@ -316,7 +396,7 @@ public class View extends JFrame {
 			}
 		});
 
-		newGame.addActionListener( (e) -> {
+		newGame.addActionListener((e) -> {
 
 			while (!step.empty()) {
 				newGame();
@@ -356,22 +436,26 @@ public class View extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!isTicked[jButton.row][jButton.column]) {
+			if (!isTicked[jButton.row][jButton.column]) {
 				PointStep coordinated = new PointStep(jButton.row, jButton.column);
 				step.push(coordinated);
 				jButton.setText(player);
 				algorithm.drawTick(this.jButton);
 				boolean playerWin = checkWinner(jButton.column, jButton.row);
-				if(playerWin) {
+				if (playerWin) {
 					JOptionPane.showMessageDialog(null, "Trời ơi bạn " + player
 							+ " chơi hay quá!!!");
 					JOptionPane.showMessageDialog(null, "Sao mày chơi ngu vậy hả " +
-					algorithm.checkPlayer(player) + "????");
+							algorithm.checkPlayer(player) + "????");
 					newGame();
 				}
 				player = algorithm.checkPlayer(player);
 				showTurn();
 				isTicked[jButton.row][jButton.column] = true;
+				
+				// networking part
+				state = false;
+				client.sendNewUpdate(coordinated);
 			}
 		}
 	}
